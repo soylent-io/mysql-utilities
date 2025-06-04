@@ -206,7 +206,7 @@ def _print_connection(prefix, conn_info):
     conn_info[in]          Connection information
     """
     conn_val = get_connection_dictionary(conn_info)
-    print "# %s on %s: ..." % (prefix, conn_val["host"]),
+    print("# %s on %s: ..." % (prefix, conn_val["host"]), end=' ')
 
 
 def get_local_servers(all_proc=False, start=3306, end=3333,
@@ -377,17 +377,17 @@ def get_server_state(server, host, pingtime=3, verbose=False):
     Returns string - state
     """
     if verbose:
-        print "# Attempting to contact %s ..." % host,
+        print("# Attempting to contact %s ..." % host, end=' ')
     if server is not None and server.is_alive():
         if verbose:
-            print "Success"
+            print("Success")
         return "UP"
     elif ping_host(host, pingtime):
         if verbose:
-            print "Server is reachable"
+            print("Server is reachable")
         return "WARN"
     if verbose:
-        print "FAIL"
+        print("FAIL")
     return "DOWN"
 
 
@@ -488,7 +488,7 @@ def connect_servers(src_val, dest_val, options=None):
     else:
         source = get_server(src_name, src_dict, quiet, verbose=verbose)
         if not quiet:
-            print "connected."
+            print("connected.")
     if not _require_version(source, version):
         raise UtilError("The %s version is incompatible. Utility "
                         "requires version %s or higher." %
@@ -502,7 +502,7 @@ def connect_servers(src_val, dest_val, options=None):
             destination = get_server(dest_name, dest_dict, quiet,
                                      verbose=verbose)
             if not quiet:
-                print "connected."
+                print("connected.")
         if not _require_version(destination, version):
             raise UtilError("The %s version is incompatible. Utility "
                             "requires version %s or higher." %
@@ -511,7 +511,7 @@ def connect_servers(src_val, dest_val, options=None):
             not isinstance(dest_val, Server):
         try:
             _print_connection(dest_name, src_dict)
-            print "connected."
+            print("connected.")
         except:
             print("")
             raise
@@ -1882,9 +1882,9 @@ class Server(object):
                                    "ENGINE=%s" % def_engine)
             if not quiet:
                 if len(exist_engine) > 0:
-                    print replace_msg % (exist_engine, def_engine, tbl_name)
+                    print(replace_msg % (exist_engine, def_engine, tbl_name))
                 else:
-                    print add_msg % (def_engine, tbl_name)
+                    print(add_msg % (def_engine, tbl_name))
             exist_engine = def_engine
 
         # Use new engine
@@ -1908,9 +1908,9 @@ class Server(object):
                 res = [create_str]
             if not quiet:
                 if len(exist_engine) > 0:
-                    print replace_msg % (exist_engine, new_engine, tbl_name)
+                    print(replace_msg % (exist_engine, new_engine, tbl_name))
                 else:
-                    print add_msg % (new_engine, tbl_name)
+                    print(add_msg % (new_engine, tbl_name))
         return res
 
     def get_innodb_stats(self):
@@ -1992,7 +1992,7 @@ class Server(object):
             if len(cmd) > 1:
                 if cmd[0] != '#':
                     if verbose:
-                        print cmd
+                        print(cmd)
                     query_options = {
                         'fetch': False
                     }

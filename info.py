@@ -181,4 +181,4 @@ if __name__ == "__main__":
     for key, item in INSTALL.iteritems():
         print("--> {0}".format(key))
         print("      {0}".format(item))
-        print
+        print()

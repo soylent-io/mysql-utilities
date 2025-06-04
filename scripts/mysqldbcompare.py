@@ -415,7 +415,7 @@ if __name__ == '__main__':
                 res = database_compare(server1_values, server2_values,
                                        db1, db2, options)
                 if not opt.quiet:
-                    print
+                    print()
             except UtilError:
                 _, e, _ = sys.exc_info()
                 print("ERROR: %s" % e.errmsg)
@@ -428,7 +428,7 @@ if __name__ == '__main__':
                 break
 
     if not opt.quiet:
-        print
+        print()
         if check_failed is None:
             print("# No databases to compare.")
         elif check_failed:

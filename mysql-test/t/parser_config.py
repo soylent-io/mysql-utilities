@@ -19,7 +19,7 @@
 config_parser test.
 """
 
-import ConfigParser
+import configparser
 import os
 
 from mysql.utilities.exception import MUTLibError, UtilError
@@ -91,7 +91,7 @@ class test(server_info.test):
         if not res[0][1]:
             raise MUTLibError('Cannot setup SSL server for test')
 
-        config_p = ConfigParser.ConfigParser()
+        config_p = configparser.ConfigParser()
         with open(self.config_file_path, 'w') as config_f:
 
             config_p.add_section('client')

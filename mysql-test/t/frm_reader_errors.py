@@ -74,7 +74,7 @@ class test(frm_reader_base.test):
         self.res_fname = "result.txt"
 
         if self.debug:
-            print
+            print()
         test_num = 1
 
         self.cmd = "mysqlfrm.py --server={0} ".format(

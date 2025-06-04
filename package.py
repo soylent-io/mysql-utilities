@@ -90,7 +90,7 @@ Installing cx_Freeze
 
 """
 
-import ConfigParser
+import configparser
 import fnmatch
 import sys
 import os
@@ -324,7 +324,7 @@ class install_data(_install_data):
                 # It was a config file template, add install
                 # directories to the config file.
                 if fnmatch.fnmatch(filename, 'data/*.cfg.in'):
-                    config = ConfigParser.RawConfigParser({
+                    config = configparser.RawConfigParser({
                         'prefix': '',  # custom install_dir,
                         'logdir': install_logdir,
                         'sysconfdir': install_sysconfdir,

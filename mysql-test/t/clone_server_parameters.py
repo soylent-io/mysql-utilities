@@ -116,7 +116,7 @@ class test(mutlib.System_test):
                 run_script = restart
                 with open("restart.txt", 'a+') as f_out:
                     if self.debug:
-                        print
+                        print()
                         print("executing script: {0}".format(run_script))
                         subprocess.Popen(run_script)
                     else:

@@ -479,10 +479,10 @@ class Console(object):
         if self.quiet:
             return
         if not self.errors:
-            print
+            print()
             print("No errors to display.\n")
         for error in self.errors:
-            print
+            print()
             print("{0}\n".format(error))
 
     def clear_errors(self):
@@ -493,7 +493,7 @@ class Console(object):
         if self.quiet:
             return
         self.errors = []
-        print
+        print()
 
     def show_last_error(self):
         """Show errors
@@ -503,10 +503,10 @@ class Console(object):
         if self.quiet:
             return
         if not self.errors:
-            print
+            print()
             print("No error to display.\n")
         else:
-            print
+            print()
             print("{0}\n".format(self.errors[-1]))
 
     def show_custom_command_help(self, arg):
@@ -518,7 +518,7 @@ class Console(object):
         """
         if self.quiet:
             return
-        print "\nNo commands like '%s' exist.\n" % arg
+        print("\nNo commands like '%s' exist.\n" % arg)
 
     def do_custom_tab(self, prefix):
         """Do custom tab key processing
@@ -539,7 +539,7 @@ class Console(object):
         """
         if self.quiet:
             return
-        print "\n\nNo custom commands found.\n"
+        print("\n\nNo custom commands found.\n")
 
     @staticmethod
     def is_valid_custom_command(command_text):
@@ -629,11 +629,11 @@ class Console(object):
         if self.quiet:
             return
         if not parameter or (parameter and parameter.lower() == 'commands'):
-            print
+            print()
             print_dictionary_list(['Command', 'Description'],
                                   ['name', 'text', 'alias'],
                                   self.base_commands, self.width, True)
-            print
+            print()
         else:
             matches = self.get_commands(parameter)
             if len(matches) > 0:
@@ -708,11 +708,11 @@ class Console(object):
         matches[in]        Known matches (from do_command_tab)
         """
         if self.tab_count == 2:
-            print "\n"
+            print("\n")
             print_dictionary_list(['Command', 'Description'],
                                   ['name', 'text', 'alias'],
                                   matches, self.width, True)
-            print
+            print()
             self.cmd_line.display_command()
             self.tab_count = 0
         else:
@@ -748,11 +748,11 @@ class Console(object):
         """
         if self.quiet:
             return
-        print
+        print()
         print_dictionary_list(['Command', 'Description'],
                               ['name', 'text', 'alias'],
                               commands, self.width, True)
-        print
+        print()
 
     def _do_command(self, command):
         """Execute a command
@@ -767,12 +767,12 @@ class Console(object):
         # do variable replacement
         command = self._replace_variables(command.strip(' '))
         if self.options.get('verbosity', False):
-            print "\nExecuting command:", command
+            print("\nExecuting command:", command)
         # process simple commands
         if command.lower().startswith('set '):
             self._add_variable(command[4:])
             if not self.quiet:
-                print
+                print()
         elif command[0:11].lower() == 'show errors':
             self.show_errors()
         elif command[0:12].lower() == 'clear errors':
@@ -794,9 +794,9 @@ class Console(object):
                     self.cmd_line.clear()
                     self.tab_count = 0
                 elif cmd == '':
-                    print
+                    print()
                 elif cmd.lower() in ['exit', 'quit']:
-                    print
+                    print()
                     return True
                 elif self.custom_commands:
                     if not self.is_valid_custom_command(cmd):
@@ -805,9 +805,9 @@ class Console(object):
                     else:
                         try:
                             self.execute_custom_command(cmd, parameters)
-                            print
+                            print()
                         except UtilError as err:
-                            print err.errmsg
+                            print(err.errmsg)
 
         self.cmd_line.clear()
         self.tab_count = 0
@@ -859,7 +859,7 @@ class Console(object):
         set_command[in]    Set command from the user
         """
         if set_command.find('=') <= 0:
-            print "\n\nSET command invalid. Syntax: SET <NAME> = <value>"
+            print("\n\nSET command invalid. Syntax: SET <NAME> = <value>")
             return
 
         # get name and value
@@ -908,7 +908,7 @@ class Console(object):
         try:
             tokens = shlex.split(cmd_string)
         except ValueError as err:
-            print
+            print()
             print("WARNING: Unable to execute command, reason: {0}"
                   "".format(str(err)))
             return None, None
@@ -993,12 +993,12 @@ class Console(object):
         else:
             cmd = ''
             if not self.quiet:
-                print self.options.get('welcome', 'Welcome to the console!\n')
+                print(self.options.get('welcome', 'Welcome to the console!\n'))
             while cmd.lower() not in ['exit', 'quit']:
                 command = self.get_user_command()
                 self.history.add(command)
                 if self._do_command(command):
                     break
             if not self.quiet:
-                print self.options.get('goodbye',
-                                       'Thanks for using the console.\n')
+                print(self.options.get('goodbye',
+                                       'Thanks for using the console.\n'))

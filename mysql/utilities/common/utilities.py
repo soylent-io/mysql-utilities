@@ -464,15 +464,15 @@ class Utilities(object):
             list_of_utilities = self.util_list
         else:
             list_of_utilities = print_list
-        print
+        print()
         if len(list_of_utilities) > 0:
             print_dictionary_list(['Utility', 'Description'],
                                   ['name', 'description'],
                                   list_of_utilities, self.width)
         else:
-            print
-            print "No utilities match the search term."
-        print
+            print()
+            print("No utilities match the search term.")
+        print()
 
     def get_options_dictionary(self, utility_options):
         """Retrieve the options dictionary.
@@ -520,12 +520,12 @@ class Utilities(object):
         """
         if len(options) > 0:
             dictionary_list = self.get_options_dictionary(options)
-            print
-            print
+            print()
+            print()
             print_dictionary_list(['Option', 'Description'],
                                   ['long_name', 'description'],
                                   dictionary_list, self.width)
-            print
+            print()
 
     @staticmethod
     def get_usage(util_info):

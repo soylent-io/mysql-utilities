@@ -21,7 +21,7 @@ replicate_ms test with SSL.
 
 import os
 
-import ConfigParser
+import configparser
 
 import replicate_ms
 
@@ -114,7 +114,7 @@ class test(replicate_ms.test):
         self.cleanup_logs()
 
         # setup config_path
-        config_p = ConfigParser.ConfigParser()
+        config_p = configparser.ConfigParser()
         self.test_server_names = []
         servers_ = [self.server1, self.server2, self.server3]
         with open(self.config_file_path, 'w') as config_f:
