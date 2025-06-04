@@ -28,11 +28,7 @@ import codecs
 import csv
 import os
 import textwrap
-
-try:
-    import cStringIO as StringIO
-except ImportError:
-    import StringIO
+from io import StringIO
 
 from mysql.utilities.common.sql_transform import to_sql
 

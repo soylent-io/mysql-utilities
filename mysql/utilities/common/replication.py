@@ -21,7 +21,7 @@ This module contains abstractions of MySQL replication functionality.
 
 import os
 import time
-import StringIO
+from io import StringIO
 import socket
 
 from mysql.utilities.exception import UtilError, UtilRplWarn, UtilRplError
