@@ -180,7 +180,7 @@ def get_create_object(server, object_name, options, object_type):
 
     create_stmt = db.get_create_statement(obj[0], obj[1], object_type)
 
-    if verbosity > 0 and not quiet:
+    if verbosity is not None and verbosity > 0 and not quiet:
         if obj_name:
             print("\n# Definition for object {0}.{1}:"
                   "".format(remove_backtick_quoting(db_name, sql_mode),
