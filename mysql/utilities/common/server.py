@@ -50,58 +50,6 @@ _GTID_ERROR = ("The server %s:%s does not comply to the latest GTID "
                "feature support. Errors:")
 
 
-def tostr(value):
-    """Cast value to str except when None
-
-    value[in]          Value to be cast to str
-
-    Returns value as str instance or None.
-    """
-    return None if value is None else str(value)
-
-
-class MySQLUtilsCursorRaw(mysql.connector.cursor.MySQLCursorRaw):
-    """
-    Cursor for Connector/Python v2.0, returning str instead of bytearray
-    """
-    def fetchone(self):
-        row = self._fetch_row()
-        if row:
-            return tuple([tostr(v) for v in row])
-        return None
-
-    def fetchall(self):
-        rows = []
-        all_rows = super(MySQLUtilsCursorRaw, self).fetchall()
-        for row in all_rows:
-            rows.append(tuple([tostr(v) for v in row]))
-        return rows
-
-
-class MySQLUtilsCursorBufferedRaw(
-        mysql.connector.cursor.MySQLCursorBufferedRaw):
-    """
-    Cursor for Connector/Python v2.0, returning str instead of bytearray
-    """
-    def fetchone(self):
-        row = self._fetch_row()
-        if row:
-            return tuple([tostr(v) for v in row])
-        return None
-
-    def fetchall(self):
-        if self._rows is None:
-            raise mysql.connector.InterfaceError(
-                "No result set to fetch from."
-            )
-
-        rows = []
-        all_rows = [r for r in self._rows[self._next_row:]]
-        for row in all_rows:
-            rows.append(tuple([tostr(v) for v in row]))
-        return rows
-
-
 def get_connection_dictionary(conn_info, ssl_dict=None):
     """Get the connection dictionary.
 
@@ -1259,7 +1207,7 @@ class Server(object):
                            use a buffered cursor
                            (default is True)
             raw            If True, use a buffered raw cursor
-                           (default is True)
+                           (default is False)
             commit         Perform a commit (if needed) automatically at the
                            end (default: True).
         exec_timeout[in]   Timeout value in seconds to kill the query execution
@@ -1274,7 +1222,7 @@ class Server(object):
         params = options.get('params', ())
         columns = options.get('columns', False)
         fetch = options.get('fetch', True)
-        raw = options.get('raw', True)
+        raw = options.get('raw', False)
         do_commit = options.get('commit', True)
 
         # Guard for connect() prerequisite
@@ -1282,19 +1230,9 @@ class Server(object):
 
         # If we are fetching all, we need to use a buffered
         if fetch:
-            if raw:
-                if mysql.connector.__version_info__ < (2, 0):
-                    cur = self.db_conn.cursor(buffered=True, raw=True)
-                else:
-                    cur = self.db_conn.cursor(
-                        cursor_class=MySQLUtilsCursorBufferedRaw)
-            else:
-                cur = self.db_conn.cursor(buffered=True)
+            cur = self.db_conn.cursor(buffered=True, raw=raw)
         else:
-            if mysql.connector.__version_info__ < (2, 0):
-                cur = self.db_conn.cursor(raw=True)
-            else:
-                cur = self.db_conn.cursor(cursor_class=MySQLUtilsCursorRaw)
+            cur = self.db_conn.cursor(raw=raw)
 
         # Execute query, handling parameters.
         q_killer = None
@@ -2273,11 +2211,7 @@ class QueryKillerThread(threading.Thread):
             # kill the query.
             if not self._stop_event.is_set():
                 try:
-                    if mysql.connector.__version_info__ < (2, 0):
-                        cur = self._connection.cursor(raw=True)
-                    else:
-                        cur = self._connection.cursor(
-                            cursor_class=MySQLUtilsCursorRaw)
+                    cur = self._connection.cursor()
 
                     # Get process information from threads table when available
                     # (for versions > 5.6.1), since it does not require a mutex
